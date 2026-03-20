@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  balance   Decimal  @default(0.00)
+  createdAt DateTime @default(now())
+
+  sentTransactions     Transaction[] @relation("sent")
+  receivedTransactions Transaction[] @relation("received")
+}
+
+model Transaction {
+  id     String            @id @default(uuid())
+  type   TransactionType
+  amount Decimal
+  status TransactionStatus @default(COMPLETED)
+
+  senderId   String?
+  receiverId String?
+
+  sender   User? @relation("sent", fields: [senderId], references: [id])
+  receiver User? @relation("received", fields: [receiverId], references: [id])
+
+  originalTransactionId String?
+  originalTransaction   Transaction?  @relation("TransactionReversal", fields: [originalTransactionId], references: [id])
+  reversals             Transaction[] @relation("TransactionReversal")
+
+  createdAt DateTime @default(now())
+}
+
+enum TransactionType {
+  DEPOSIT
+  TRANSFER
+  REVERSAL
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  REVERSED
+}
