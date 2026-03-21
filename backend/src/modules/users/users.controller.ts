@@ -11,6 +11,7 @@ export class UsersController {
   @Post()
   @ApiOperation({ summary: 'Criar usuário' })
   @ApiResponse({ status: 201, description: 'Usuário criado com sucesso' })
+  @ApiResponse({ status: 400, description: 'Email já em uso' })
   create(@Body() data: CreateUserDto) {
     return this.usersService.create(data);
   }

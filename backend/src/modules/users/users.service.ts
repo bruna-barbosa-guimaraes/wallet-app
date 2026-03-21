@@ -25,4 +25,8 @@ export class UsersService {
     const { password, ...result } = user;
     return result;
   }
+
+  async findByEmail(email: string) {
+    return this.usersRepository.findByEmail(email);
+  }
 }
