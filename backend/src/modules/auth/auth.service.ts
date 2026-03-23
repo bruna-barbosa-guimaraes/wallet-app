@@ -24,7 +24,10 @@ export class AuthService {
       throw new UnauthorizedException('Senha inválida');
     }
 
-    return user;
+    return {
+      id: user.id,
+      email: user.email,
+    };
   }
 
   async login(data: LoginDto) {
