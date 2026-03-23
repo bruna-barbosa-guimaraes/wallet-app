@@ -67,16 +67,16 @@ wallet-app/
 - Login retorna um JWT seguro
 - Cookies HTTP-only usados para autenticação no frontend
 
-### 📊 Endpoints da API
+### Endpoints da API
 
-#### 🧾 Auth
+#### Auth
 
 | Método | Endpoint         | Descrição           |
 | :----- | :--------------- | :------------------ |
 | POST   | `/auth/register` | Cadastro de usuário |
 | POST   | `/auth/login`    | Login de usuário    |
 
-#### 💰 Transações / Carteira
+#### Transações / Carteira
 
 | Método | Endpoint                    | Descrição                           |
 | :----- | :-------------------------- | :---------------------------------- |
