@@ -34,7 +34,7 @@ O backend foi implementado em **NestJS** com **Prisma ORM** e o frontend em **Ne
 
 ---
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```text
 wallet-app/
@@ -61,7 +61,7 @@ wallet-app/
 
 ## Funcionalidades
 
-### 🔐 Autenticação
+### Autenticação
 
 - Usuário pode se cadastrar (`POST /auth/register`)
 - Login retorna um JWT seguro
@@ -115,9 +115,9 @@ Entidades principais:
 - status (COMPLETED, REVERSED)
 - createdAt
 
-## 🛠️ Como Rodar Localmente
+## Como Rodar Localmente
 
-### 🐳 Usando Docker
+### Usando Docker
 
 1. Clone o repositório
 
@@ -151,7 +151,7 @@ Entidades principais:
 
 A API estará disponível em: http://localhost:3000
 
-### 📌 Frontend (Next.js)
+### Frontend (Next.js)
 
 O frontend consume os endpoints da API e usa cookies HTTP-only para autenticação:
 
@@ -161,7 +161,7 @@ npm install
 npm run dev
 ```
 
-## 🧪 Testes Automatizados
+## Testes Automatizados
 
 A cobertura inclui:
 
