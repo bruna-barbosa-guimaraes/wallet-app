@@ -32,6 +32,7 @@ describe('TransactionsService', () => {
         findUnique: jest.fn(),
         create: jest.fn(),
         update: jest.fn(),
+        findMany: jest.fn(),
       },
       $transaction: jest.fn((callback) => callback(prisma)),
     };
@@ -220,13 +221,15 @@ describe('TransactionsService', () => {
     const mockTransactions = [
       {
         id: 't1',
-        userId: '1',
+        senderId: '1',
+        toUserId: '2',
         amount: new Decimal(50),
         createdAt: new Date('2026-01-01'),
       },
       {
         id: 't2',
-        userId: '1',
+        senderId: '2',
+        toUserId: '1',
         amount: new Decimal(100),
         createdAt: new Date('2026-02-01'),
       },
@@ -237,7 +240,7 @@ describe('TransactionsService', () => {
     const result = await service.listUserTransactions('1');
 
     expect(prisma.transaction.findMany).toHaveBeenCalledWith({
-      where: { userId: '1' },
+      where: { senderId: '1' },
       orderBy: { createdAt: 'desc' },
     });
 
@@ -250,7 +253,7 @@ describe('TransactionsService', () => {
     const result = await service.listUserTransactions('1');
 
     expect(prisma.transaction.findMany).toHaveBeenCalledWith({
-      where: { userId: '1' },
+      where: { senderId: '1' },
       orderBy: { createdAt: 'desc' },
     });
 
