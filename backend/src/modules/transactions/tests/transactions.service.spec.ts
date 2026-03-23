@@ -215,4 +215,45 @@ describe('TransactionsService', () => {
       data: { status: TransactionStatus.REVERSED },
     });
   });
+
+  it('deve retornar todas as transações do usuário, ordenadas do mais recente', async () => {
+    const mockTransactions = [
+      {
+        id: 't1',
+        userId: '1',
+        amount: new Decimal(50),
+        createdAt: new Date('2026-01-01'),
+      },
+      {
+        id: 't2',
+        userId: '1',
+        amount: new Decimal(100),
+        createdAt: new Date('2026-02-01'),
+      },
+    ];
+
+    prisma.transaction.findMany.mockResolvedValue(mockTransactions);
+
+    const result = await service.listUserTransactions('1');
+
+    expect(prisma.transaction.findMany).toHaveBeenCalledWith({
+      where: { userId: '1' },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    expect(result).toEqual(mockTransactions);
+  });
+
+  it('deve retornar array vazio se não houver transações', async () => {
+    prisma.transaction.findMany.mockResolvedValue([]);
+
+    const result = await service.listUserTransactions('1');
+
+    expect(prisma.transaction.findMany).toHaveBeenCalledWith({
+      where: { userId: '1' },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    expect(result).toEqual([]);
+  });
 });

@@ -6,6 +6,7 @@ import {
   HttpStatus,
   UseGuards,
   Param,
+  Get,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -74,5 +75,17 @@ export class TransactionsController {
   })
   async reverse(@Param('id') transactionId: string) {
     return this.transactionsService.reverse(transactionId);
+  }
+
+  @Get('transactions')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Listar todas as transações do usuário' })
+  @ApiResponse({ status: 200, description: 'Lista de transações do usuário' })
+  @ApiResponse({
+    status: 400,
+    description: 'Usuário não encontrado ou erro ao buscar',
+  })
+  async list(@CurrentUser() user: AuthUser) {
+    return this.transactionsService.listUserTransactions(user.userId);
   }
 }

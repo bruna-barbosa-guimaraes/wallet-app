@@ -168,4 +168,11 @@ export class TransactionsService {
       message: 'Transação revertida com sucesso',
     };
   }
+
+  async listUserTransactions(userId: string) {
+    return this.prisma.transaction.findMany({
+      where: { senderId: userId },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
 }

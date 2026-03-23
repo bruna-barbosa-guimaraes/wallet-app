@@ -29,4 +29,11 @@ export class UsersService {
   async findByEmail(email: string) {
     return this.usersRepository.findByEmail(email);
   }
+
+  async findById(id: string) {
+    const user = await this.usersRepository.findById(id);
+    if (!user) return null;
+    const { password, ...result } = user;
+    return result;
+  }
 }
