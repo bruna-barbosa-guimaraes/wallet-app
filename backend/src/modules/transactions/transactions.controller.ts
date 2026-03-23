@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   UseGuards,
+  Param,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -24,9 +25,10 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 @UseGuards(JwtAuthGuard)
 @Controller('transactions')
 export class TransactionsController {
-  constructor(private service: TransactionsService) {}
+  constructor(private transactionsService: TransactionsService) {}
 
   @Post('deposit')
+  @HttpCode(200)
   @ApiOperation({ summary: 'Realizar depósito na conta do usuário' })
   @ApiResponse({
     status: 200,
@@ -37,10 +39,11 @@ export class TransactionsController {
     description: 'Erro de validação ou usuário não encontrado',
   })
   deposit(@CurrentUser() user: AuthUser, @Body() body: DepositDto) {
-    return this.service.deposit(user.userId, body.amount);
+    return this.transactionsService.deposit(user.userId, body.amount);
   }
 
   @Post('transfer')
+  @HttpCode(200)
   @ApiOperation({ summary: 'Transferir valor para outro usuário' })
   @ApiResponse({
     status: 200,
@@ -51,6 +54,25 @@ export class TransactionsController {
     description: 'Erro de validação, saldo insuficiente ou usuário inválido',
   })
   transfer(@CurrentUser() user: AuthUser, @Body() body: TransferDto) {
-    return this.service.transfer(user.userId, body.toUserId, body.amount);
+    return this.transactionsService.transfer(
+      user.userId,
+      body.toUserId,
+      body.amount,
+    );
+  }
+
+  @Post(':id/reverse')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Reverter uma transação' })
+  @ApiResponse({
+    status: 200,
+    description: 'Transação revertida com sucesso',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Erro de validação ou transação não encontrada',
+  })
+  async reverse(@Param('id') transactionId: string) {
+    return this.transactionsService.reverse(transactionId);
   }
 }
